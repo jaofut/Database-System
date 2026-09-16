@@ -1,19 +1,20 @@
 import sys
 import os
-def gravador(local_arquivo, page_id,slot_id, dados:bytes):
+def gravador(local_arquivo, page_id,slot_id, dados:str):
     tamanho_pag = 4096
     tamanho_cabecalho = 16
     tamanho_registro = 8
+    dados_em_bytes = dados.encode("utf-8")
     if not os.path.exists(local_arquivo):
         with open(local_arquivo , "wb") as arquivo:
             inicio_gravacao =tamanho_pag * page_id
             arquivo.seek(inicio_gravacao)
             arquivo.write(bytearray(tamanho_pag)) #preenchendo a página de bytes de valores nulo
-    if len(dados) <= tamanho_registro:
+    if len(dados_em_bytes) <= tamanho_registro:
         with open(local_arquivo, "r+b") as arquivo: #gravando os dados
             inicio_gravacao = (tamanho_pag *page_id) +tamanho_cabecalho + (tamanho_registro*slot_id)
             arquivo.seek(inicio_gravacao)
-            arquivo.write(dados)
+            arquivo.write(dados_em_bytes)
     else: 
         print("Tamanho dos dados excede o tamanho máximo de um registro")
 
