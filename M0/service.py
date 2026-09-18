@@ -1,5 +1,7 @@
 import sys
 import os
+import struct
+tamanho_pag = 4096
 def gravador(local_arquivo, page_id,slot_id, dados:str):
     tamanho_pag = 4096
     tamanho_cabecalho = 16
@@ -28,8 +30,14 @@ def leitor(local_arquivo , page_id):
         dados_pagina= arquivo.read(tamanho_pag)
 
         return dados_pagina
-        
 
+def deslocamento(page_id,slot_id):
+
+    return (tamanho_pag *page_id) +tamanho_cabecalho + (tamanho_registro*slot_id)
+        
+def serializador(dados1, dados2):
+    dados_serializados = struct.pack("<II",dados1,dados2)
+    return dados_serializados
 
 
 
